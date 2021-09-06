@@ -5,8 +5,8 @@ class App extends Component{
   constructor(props){
     super(props);
     this.state = {
-      alcool: '',
-      gasolina:'',
+      peso: '',
+      altura:'',
       resultado:'',
     };
     
@@ -17,15 +17,18 @@ class App extends Component{
    
   calcular(){
    
-    if ( (this.state.alcool === '') || (this.state.gasolina === '') ){
+    if ( (this.state.peso === '') || (this.state.altura === '') ){
       alert('Digite os valores!')
       return;
     } 
-   var r = this.state.alcool / this.state.gasolina;
-     if (r < 0.7){
-      this.setState({resultado: 'Melhor abastecer com o Etanol '});
-      } else{ this.setState({resultado:'Melhor abastecer com Gasolina'})
-      }
+   var imc = this.state.peso / (this.state.altura * this.state.altura);
+     if (imc > 30){
+       this.setState({resultado: 'Obesidade.'});
+      } else if( imc > 25 ){
+         this.setState({resultado:'Acima do peso recomendado.'})
+      } else if(imc > 18.5){
+        this.setState({resultado:'Peso normal.'})
+      } else this.setState({resultado:'Magreza.'})
 
   }
         
@@ -36,23 +39,23 @@ class App extends Component{
     return(
       <View style={styles.container}>
       
-    <Text style={styles.titulo}>Alcool ou Gasolina </Text>
+    <Text style={styles.titulo}> Calculo IMC </Text>
 
-    <Image
-          source={{ uri: 'https://enfoquebusiness.com.br/wp-content/uploads/2021/02/COMBUST%C3%8DVEL-ILUSTRA%C3%87%C3%83O-AUMENTO-DE-PRE%C3%87OS.jpg'}}
+   <Image
+          source={{ uri: 'https://www.maestrosaude.com.br/wp-content/uploads/2016/04/Tabela-imc-Calculo-imc-oms.jpg'}}
           style={styles.imagemCentr}/>
 
     <TextInput
       style={styles.input}
-      placeholder="Valor Alcool"
+      placeholder="Valor peso"
       keyboardType="numeric"
-      onChangeText={ (texto) => this.setState({alcool: texto})}
+      onChangeText={ (texto) => this.setState({peso: texto})}
       />
 
     <TextInput
         style={styles.input}
-        onChangeText={ (texto) => this.setState({gasolina : texto})}
-        placeholder="Valor Gasolina"
+        onChangeText={ (texto) => this.setState({altura : texto})}
+        placeholder="Valor altura"
         keyboardType="numeric"
       />
         
@@ -61,7 +64,6 @@ class App extends Component{
 
     <Text style={styles.texto}> {this.state.resultado} </Text>
 
-            
 
 
       </View>
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
   imagemCentr: {
     alignItems: 'center',
     width: 400,
-    height: 200,
+    height: 300,
     margin: 10,
 },
   texto:{
